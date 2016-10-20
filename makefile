@@ -1,3 +1,3 @@
 main:
-	g++ Main.cpp -o Test
+	g++ -std=c++11 Main.cpp -o Test
 	./Test
