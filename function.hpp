@@ -1,18 +1,16 @@
 #include <set>
 
-#ifndef RANDU
-#define RANDU
-  double randu(int range_from, int range_to);
-#endif
+using namespace std;
 
-#ifndef N_LOCATE
-#define N_LOCATE
-  void n_locate(int n, int sq_area, double loc_x[], double loc_y[]);
-#endif  
-
-#ifndef P_GENERATOR
-#define P_GENERATOR
-  void p_generator (int n, int Pth,int alpha, double P[], double loc_x[], double loc_y[]);
+#ifndef MINIMUM_SPANNING_TREE
+#define MINIMUM_SPANNING_TREE
+  double randu(int, int);
+  void n_locate(int, int, double[], double[]);
+  void p_generator (int, int, int, double[], double[], double[]);
+  void MST(int, double[], int[]);
+  void print_array(int , double[]);
+  void print_tree(int, int[]);
+  double tree_cost(int, int[], double[]);
+  void newT_creator_maxCE_update(int, int, int, double, double[], int[], int[]);
+  void CE_check(int, double, int, double, double[], int[], int[], double[]);
 #endif 
-
-void MST(int n, set<int> inc_Set, set<int> prim_Set, double P[], int T[]);
