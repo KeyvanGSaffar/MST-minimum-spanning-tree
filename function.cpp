@@ -10,8 +10,10 @@ using namespace std;
 double randu(int range_from,int range_to)
 {
   random_device rand_dev;
+  // mt19937 generator(0);
   mt19937 generator(rand_dev());
-  uniform_real_distribution<double> distribution(range_to,range_from);
+  //generator.seed(1369);
+  uniform_real_distribution<double> distribution(range_from,range_to);
 
   double number = distribution(generator);
   // cout << number << endl;
@@ -153,7 +155,7 @@ void MST(int n, double P[], int T[]){
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-void newT_creator_maxCE_update(int n, int& maxCE, int& center, double& power, double P[], int T[], int newT[]){
+void newT_creator_maxCE_update(int n, double& maxCE, int& center, double& power, double P[], int T[], int newT[]){
   for(int i=0; i<n; i++){     //for all x,y in S do
     for(int j=0; j<n; j++) {  //for all x,y in S do
       if(i!=j){               //for all x,y in S do
@@ -170,32 +172,54 @@ void newT_creator_maxCE_update(int n, int& maxCE, int& center, double& power, do
             }
           }
         }
-
+        
         for(int k=0; k<n; k++){
           if(k!=i){
             if(P[i*n + k] <= P[i*n + j]){
               P_prim[i*n + k] = 0;
+              P_prim[k*n + i] = 0;
             }
           }
         }
         
+        cout << i*n + j << endl;
+        cout << "P_prim" << endl;
+        print_array(n,P_prim);
+        cout << endl;
+
         int T_prim[n*n];
         MST(n, P_prim, T_prim); 
         
+        cout << "T_prim" << endl;
+        print_tree(n,T_prim);
+        cout << endl;
+
         double CE_temp;
         double c,c_prim;
         c = tree_cost(n,T,P)/2;
-        c_prim = tree_cost(n,T_prim,P)/2;
-        CE_temp = (c_prim)/P[i*n + j];
+        c_prim = tree_cost(n,T_prim,P_prim)/2;
+        CE_temp = (c - c_prim)/P[i*n + j];
+
+        cout << "CE_temp" << endl;
+        cout << CE_temp << endl;
+        cout << endl;
+
         if(CE_temp > maxCE){
           maxCE = CE_temp;
+
+          cout << "maxCE" << endl; 
           cout << maxCE << endl;
+          cout << endl;
+          
           center = i;
           power = P[i*n + j];
           for(int i2=0; i2<n*n; i2++){
             newT[i2] = T_prim[i2];
           }            
         }
+        cout << "newT" << endl;
+        print_tree(n, newT);
+        cout << endl;
         // print_array(n_num[node],P_prim);
       }
     }
@@ -209,7 +233,9 @@ void CE_check(int n,double maxCE, int center, double power, double P[],int T[], 
     cout << "We are in CE_check" <<endl;
     for(int i=0; i<n; i++){
       if(i!=center){
-        P[center*n + i] = 0;
+        if (P[center*n + i] < power){
+          P[center*n + i] = 0;
+        }
       }
     }
 

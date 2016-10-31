@@ -59,6 +59,7 @@ int main(){
     //   cout << *it << endl;
     // }
     memset(p_x,0,n_num[node]*sizeof(double));
+    memset(newT,0,n_num[node]*n_num[node]*sizeof(int));
     //////////////////////////////////////////////////////////////////////////
     // filling P with the edges costs
     //
@@ -70,21 +71,35 @@ int main(){
     //
     MST(n_num[node], P, T);
 
-    cout << endl;
-    // print_tree(n_num[node],T);
+    cout << "Print T" << endl;
+    print_tree(n_num[node],T);
     cout << endl;
 
     //////////////////////////////////////////////////////////////////////////
     //
     //
-    int maxCE = 0;
+    double maxCE = 0;
     int while_cnt = 0;
     while(maxCE<=2){
       maxCE = 0;
       newT_creator_maxCE_update(n_num[node], maxCE, center, power, P, T, newT);
       CE_check(n_num[node],maxCE,center,power,P,T,newT,p_x);
       while_cnt++;
+
+      cout << "maxCE_outside" << endl;
+      cout << maxCE << endl;
+      cout << endl;
+      cout << endl;
+      cout << endl;
+      cout << endl;
+
+
+
     }
+
+    cout << "while_cnt" << endl;
+    cout << while_cnt << endl;
+    cout << endl;
 
     //////////////////////////////////////////////////////////////////////////
     //

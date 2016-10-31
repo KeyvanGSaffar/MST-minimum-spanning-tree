@@ -11,6 +11,6 @@ using namespace std;
   void print_array(int , double[]);
   void print_tree(int, int[]);
   double tree_cost(int, int[], double[]);
-  void newT_creator_maxCE_update(int, int&, int&, double&, double[], int[], int[]);
+  void newT_creator_maxCE_update(int, double&, int&, double&, double[], int[], int[]);
   void CE_check(int, double, int, double, double[], int[], int[], double[]);
 #endif 
