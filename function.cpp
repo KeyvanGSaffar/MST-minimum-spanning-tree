@@ -101,7 +101,6 @@ void p_generator (int n, int Pth,int alpha, double P[], double loc_x[], double l
     }
   }
 
-  print_array(n,P);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,7 +117,7 @@ void MST(int n, double P[], int T[]){
 
   inc_Set.insert(0);  //chosing node 0 as the start point and adding it to inc_Set
   set<int>::iterator it_temp = prim_Set.find(0); 
-  prim_Set.erase(it_temp);  // removing node 1 from prim_Set
+  prim_Set.erase(it_temp);  // removing node 0 from prim_Set
     // setting all the tree's (T) elements to 0 value
   for(int i=0; i<n; i++){
     for (int j=0; j<n; j++) {
@@ -182,17 +181,17 @@ void newT_creator_maxCE_update(int n, double& maxCE, int& center, double& power,
           }
         }
         
-        cout << i*n + j << endl;
-        cout << "P_prim" << endl;
-        print_array(n,P_prim);
-        cout << endl;
+        // cout << i*n + j << endl;
+        // cout << "P_prim" << endl;
+        // print_array(n,P_prim);
+        // cout << endl;
 
         int T_prim[n*n];
         MST(n, P_prim, T_prim); 
         
-        cout << "T_prim" << endl;
-        print_tree(n,T_prim);
-        cout << endl;
+        // cout << "T_prim" << endl;
+        // print_tree(n,T_prim);
+        // cout << endl;
 
         double CE_temp;
         double c,c_prim;
@@ -200,16 +199,16 @@ void newT_creator_maxCE_update(int n, double& maxCE, int& center, double& power,
         c_prim = tree_cost(n,T_prim,P_prim)/2;
         CE_temp = (c - c_prim)/P[i*n + j];
 
-        cout << "CE_temp" << endl;
-        cout << CE_temp << endl;
-        cout << endl;
+        // cout << "CE_temp" << endl;
+        // cout << CE_temp << endl;
+        // cout << endl;
 
         if(CE_temp > maxCE){
           maxCE = CE_temp;
 
-          cout << "maxCE" << endl; 
-          cout << maxCE << endl;
-          cout << endl;
+          // cout << "maxCE" << endl; 
+          // cout << maxCE << endl;
+          // cout << endl;
           
           center = i;
           power = P[i*n + j];
@@ -217,30 +216,30 @@ void newT_creator_maxCE_update(int n, double& maxCE, int& center, double& power,
             newT[i2] = T_prim[i2];
           }            
         }
-        cout << "newT" << endl;
-        print_tree(n, newT);
-        cout << endl;
+        // cout << "newT" << endl;
+        // print_tree(n, newT);
+        // cout << endl;
         // print_array(n_num[node],P_prim);
       }
     }
   }
 
-  cout << "maxCE" << endl; 
-  cout << maxCE << endl;
-  cout << endl;
+  // cout << "maxCE" << endl; 
+  // cout << maxCE << endl;
+  // cout << endl;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 void CE_check(int n,double maxCE, int center, double power, double P[],int T[], int newT[], double p_x[]){
-  cout << "maxCE in CE_check" << endl; 
-  cout << maxCE << endl;
-  cout << endl;
+  // cout << "maxCE in CE_check" << endl; 
+  // cout << maxCE << endl;
+  // cout << endl;
   
   
   if(maxCE > 2){
 
-    cout << "We are in CE_check" <<endl;
+    // cout << "We are in CE_check" <<endl;
     for(int i=0; i<n; i++){
       if(i!=center){
         if (P[center*n + i] <= power){
@@ -254,4 +253,56 @@ void CE_check(int n,double maxCE, int center, double power, double P[],int T[], 
     }
     p_x[center] = power;
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+void pickup_grape(int n,double p_x[],double P[],int T[]){
+  set<int> setA;  // for power assignment, the set of vertices investigated
+  set<int> setS_A;  // for tree formation, the set of vertices not investigated
+  // putting nodes name in the setS_A
+  //
+  for(int i1=0; i1 < n; i1++){  
+    setS_A.insert(i1);//(n + to_string(i));
+  }
+
+  setA.insert(0);  //chosing node 0 as the start point and adding it to inc_Set
+  set<int>::iterator it_temp = setS_A.find(0); 
+  setS_A.erase(it_temp);  // removing node 0 from setB
+  
+  while (!setS_A.empty()){
+    // int e_min_cost;   // showing the end vertex of the next edge of MST
+    // finding the next edge of Minimum Spanning Tree
+    for (set<int>::iterator it_i=setA.begin(); it_i!=setA.end(); ++it_i){
+      double max_pow = 0;
+      int n_max_pow;   // showing the start vertex of the next edge of MST
+      set<int> setB;  
+ 
+      for (set<int>::iterator it_j=setS_A.begin(); it_j!=setS_A.end(); ++it_j){
+        int tmp_i = *it_i;
+        int tmp_j = *it_j;
+        if (T[(tmp_i)*n + tmp_j] == 1) {    // P[*it_i][*it_j] == P[(*it_i)*n + (*it_j + 1)]
+          setB.insert(tmp_j);
+          if (P[(tmp_i)*n + tmp_j] > max_pow){
+            max_pow = P[(tmp_i)*n + tmp_j];
+            n_max_pow = tmp_i;
+          }
+        } 
+
+//          cout << s_min_cost << "\t" << e_min_cost << endl;
+      }
+      if (max_pow != 0){
+        p_x[n_max_pow] = max_pow;
+        for (set<int>::iterator it=setB.begin(); it!=setB.end(); ++it){
+          setA.insert(*it);  //chosing node 0 as the start point and adding it to inc_Set
+          setS_A.erase(*it);
+        }
+        break;
+      }
+
+    }
+
+  }
+
 }

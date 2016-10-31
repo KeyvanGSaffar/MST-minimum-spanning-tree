@@ -14,7 +14,7 @@ int main(){
   const int Pth = 1;
   const string n = "n";
   int sq_area = 400;  // square area with this value as side length
-  int n_num[] = {25,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
+  int n_num[] = {10,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
   int alpha = 2;
   for (int node = 0; n_num[node]!=-1; node++){
 
@@ -28,8 +28,10 @@ int main(){
     int n_name[n_num[node]];  // an array including the name of all nodes
     // double P[n_num[node]][n_num[node]];   // array holding edge values
     double P[n_num[node]*n_num[node]];   // array holding edge values
+    double P_old[n_num[node]*n_num[node]];    // to keep the unchanged powers
     // int T[n_num[node]][n_num[node]];
     int T[n_num[node]*n_num[node]];
+    int T_old[n_num[node]*n_num[node]];
     int center;   // as defined in the paper
     double power;
     int newT[n_num[node]*n_num[node]];
@@ -65,15 +67,15 @@ int main(){
     //
 
     p_generator(n_num[node],Pth,alpha,P,loc_x,loc_y);
-
+    memcpy(P_old,P,sizeof(double)*n_num[node]*n_num[node]);
+    // print_array(n_num[node],P);
     //////////////////////////////////////////////////////////////////////////
     //In this part we use the Prim's algorithm o find the MST
     //
     MST(n_num[node], P, T);
+    memcpy(T_old,T,n_num[node]*n_num[node]*sizeof(int));
 
-    cout << "Print T" << endl;
-    print_tree(n_num[node],T);
-    cout << endl;
+    
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -87,19 +89,27 @@ int main(){
       CE_check(n_num[node],maxCE,center,power,P,T,newT,p_x);
       while_cnt++;
 
-      cout << "maxCE_outside" << endl;
-      cout << maxCE << endl;
-      cout << endl;
-      cout << endl;
-      cout << endl;
-      cout << endl;
+      // cout << "maxCE_outside" << endl;
+      // cout << maxCE << endl;
+      // cout << endl;
+      // cout << endl;
+      // cout << endl;
+      // cout << endl;
 
 
 
     }
 
+    cout << endl;
+    print_array(n_num[node],P);
+    cout<<endl;
+
     cout << "while_cnt" << endl;
     cout << while_cnt << endl;
+    cout << endl;
+
+    cout << "Print T" << endl;
+    print_tree(n_num[node],T);
     cout << endl;
 
 
@@ -111,6 +121,31 @@ int main(){
     //////////////////////////////////////////////////////////////////////////
     //
     //
+    memset(p_x,0,n_num[node]*sizeof(double)); // clearing p_x
+    pickup_grape(n_num[node],p_x,P_old,T);
+
+
+    cout << "p(x) final :" << endl;
+    for (int i=0; i<n_num[node] ; i++){
+      cout << p_x[i] << " "; 
+    }
+    cout << endl;
+    cout << "MST solution:" << endl;
+ 
+    memset(p_x,0,n_num[node]*sizeof(double)); // clearing p_x
+    pickup_grape(n_num[node],p_x,P_old,T_old);
+
+    cout << "Print P_old" << endl;
+    print_array(n_num[node],P_old);
+
+    cout << "Print T_old" << endl;
+    print_tree(n_num[node],T_old);
+    cout << endl;
+
+    cout << "p(x) MST :" << endl;
+    for (int i=0; i<n_num[node] ; i++){
+      cout << p_x[i] << " "; 
+    }
 
     // nSet.insert("AITF");
     // nSet.insert("Google");
