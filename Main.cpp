@@ -14,7 +14,7 @@ int main(){
   const int Pth = 1;
   const string n = "n";
   int sq_area = 400;  // square area with this value as side length
-  int n_num[] = {5,10,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
+  int n_num[] = {5,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
   int alpha = 2;
   for (int node = 0; n_num[node]!=-1; node++){
 
@@ -31,7 +31,7 @@ int main(){
     // int T[n_num[node]][n_num[node]];
     int T[n_num[node]*n_num[node]];
     int center;   // as defined in the paper
-    int power;
+    double power;
     int newT[n_num[node]*n_num[node]];
     double p_x[n_num[node]];
     /////////////////////////////////////////////////////////////////////////
@@ -58,10 +58,11 @@ int main(){
     // for(set<int>::iterator it=prim_Set.begin(); it!=prim_Set.end(); it++){
     //   cout << *it << endl;
     // }
-    memset(p_x,0,n_num[node]);
+    memset(p_x,0,n_num[node]*sizeof(double));
     //////////////////////////////////////////////////////////////////////////
     // filling P with the edges costs
     //
+
     p_generator(n_num[node],Pth,alpha,P,loc_x,loc_y);
 
     //////////////////////////////////////////////////////////////////////////
@@ -77,24 +78,26 @@ int main(){
     //
     //
     int maxCE = 0;
+    int while_cnt = 0;
     while(maxCE<=2){
       maxCE = 0;
       newT_creator_maxCE_update(n_num[node], maxCE, center, power, P, T, newT);
       CE_check(n_num[node],maxCE,center,power,P,T,newT,p_x);
+      while_cnt++;
     }
 
     //////////////////////////////////////////////////////////////////////////
     //
     //
 
-    nSet.insert("AITF");
-    nSet.insert("Google");
-    it = nSet.find("Google");
-    if (it!=nSet.end()){
-      cout << *it <<"\n";
-    }
-    for (it=nSet.begin(); it!=nSet.end(); ++it)   //set elements can only be accessed by iterators
-    cout << *it << "\n";
+    // nSet.insert("AITF");
+    // nSet.insert("Google");
+    // it = nSet.find("Google");
+    // if (it!=nSet.end()){
+    //   cout << *it <<"\n";
+    // }
+    // for (it=nSet.begin(); it!=nSet.end(); ++it)   //set elements can only be accessed by iterators
+    // cout << *it << "\n";
     // cout << '\n';
   }
   return 0;
