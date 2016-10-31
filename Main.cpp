@@ -14,7 +14,7 @@ int main(){
   const int Pth = 1;
   const string n = "n";
   int sq_area = 400;  // square area with this value as side length
-  int n_num[] = {5,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
+  int n_num[] = {25,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
   int alpha = 2;
   for (int node = 0; n_num[node]!=-1; node++){
 
@@ -78,9 +78,10 @@ int main(){
     //////////////////////////////////////////////////////////////////////////
     //
     //
-    double maxCE = 0;
+    double maxCE = 3 ;
     int while_cnt = 0;
-    while(maxCE<=2){
+    while(maxCE>2){
+    // while (while_cnt < 4) {
       maxCE = 0;
       newT_creator_maxCE_update(n_num[node], maxCE, center, power, P, T, newT);
       CE_check(n_num[node],maxCE,center,power,P,T,newT,p_x);
@@ -101,6 +102,12 @@ int main(){
     cout << while_cnt << endl;
     cout << endl;
 
+
+    cout << "p(x) :" << endl;
+    for (int i=0; i<n_num[node] ; i++){
+      cout << p_x[i] << " "; 
+    }
+    cout << endl;
     //////////////////////////////////////////////////////////////////////////
     //
     //

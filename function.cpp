@@ -158,7 +158,7 @@ void MST(int n, double P[], int T[]){
 void newT_creator_maxCE_update(int n, double& maxCE, int& center, double& power, double P[], int T[], int newT[]){
   for(int i=0; i<n; i++){     //for all x,y in S do
     for(int j=0; j<n; j++) {  //for all x,y in S do
-      if(i!=j){               //for all x,y in S do
+      if(i!=j && P[i*n+j]!=0){               //for all x,y in S do
         
         double P_prim[n*n]; // a copy of P to be modified as below and 
         for ( int i_p = 0; i_p < n*n; i_p++){
@@ -224,16 +224,26 @@ void newT_creator_maxCE_update(int n, double& maxCE, int& center, double& power,
       }
     }
   }
+
+  cout << "maxCE" << endl; 
+  cout << maxCE << endl;
+  cout << endl;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 void CE_check(int n,double maxCE, int center, double power, double P[],int T[], int newT[], double p_x[]){
+  cout << "maxCE in CE_check" << endl; 
+  cout << maxCE << endl;
+  cout << endl;
+  
+  
   if(maxCE > 2){
+
     cout << "We are in CE_check" <<endl;
     for(int i=0; i<n; i++){
       if(i!=center){
-        if (P[center*n + i] < power){
+        if (P[center*n + i] <= power){
           P[center*n + i] = 0;
         }
       }
