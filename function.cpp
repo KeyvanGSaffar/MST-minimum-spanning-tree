@@ -58,31 +58,31 @@ double tree_cost(int n, int T[], double P[]){
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
-void n_locate(int n, int sq_area, double loc_x[], double loc_y[]){
-
+// void n_locate(int n, int sq_area, double loc_x[], double loc_y[]){
+void n_locate(int n, double loc_x[], double loc_y[]){
+  double angle;
+  double radius;
   for (int j=0; j < n; j++){
-    loc_x[j] = randu(0,sq_area);   // x are chosun randomly with unform distribution
-    loc_y[j] = randu(0,sq_area);   // y are chosun randomly with unform distribution
+    angle = randu(0,1)*2*M_PI;   // x are chosun randomly with unform distribution
+    radius = pow(randu(0,1),0.5);   // y are chosun randomly with unform distribution
+
+    loc_x[j] = radius*cos(angle);   // x,y are chosun randomly with unform distribution
+    loc_y[j] = radius*sin(angle);   // x,y are chosun randomly with unform distribution
     // cout << setw(9) <<loc[i][j] ;
   }
-  double scale = 1; // in the following for loops we check whether there are any nodes that are closer that 1 unit (meter) to each other. If so, we update the scale to new value and multiply all coordinates by 1/scale.
-  for(int i=0; i<n; i++){
-    for (int j=i; j<n; j++) {
-      if (i!=j) {
-        double temp = pow((loc_x[i]-loc_x[j]), 2) + pow((loc_y[i]-loc_y[j]), 2);
-        temp = pow(temp, 0.5);
-        if(temp < scale){
-          scale = temp;
-        }
-      }
-    }
-  }
-  cout << scale << endl;
-  for (int j=0; j<n; j++){  // filling the 2D array with locations x,y
-    loc_x[j] *= (1/scale);   // x,y are chosun randomly with unform distribution
-    loc_y[j] *= (1/scale);   // x,y are chosun randomly with unform distribution
-    // cout << setw(12) <<loc[i][j] ;
-  }
+  // double scale = 1; // in the following for loops we check whether there are any nodes that are closer that 1 unit (meter) to each other. If so, we update the scale to new value and multiply all coordinates by 1/scale.
+  // for(int i=0; i<n; i++){
+  //   for (int j=i; j<n; j++) {
+  //     if (i!=j) {
+  //       double temp = pow((loc_x[i]-loc_x[j]), 2) + pow((loc_y[i]-loc_y[j]), 2);
+  //       temp = pow(temp, 0.5);
+  //       if(temp < scale){
+  //         scale = temp;
+  //       }
+  //     }
+  //   }
+  // }
+  // cout << scale << endl;
   // cout << endl;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////

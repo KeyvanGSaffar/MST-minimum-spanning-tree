@@ -5,7 +5,7 @@ using namespace std;
 #ifndef MINIMUM_SPANNING_TREE
 #define MINIMUM_SPANNING_TREE
   double randu(int, int);
-  void n_locate(int, int, double[], double[]);
+  void n_locate(int, double[], double[]);
   void p_generator (int, int, int, double[], double[], double[]);
   void MST(int, double[], int[]);
   void print_array(int , double[]);

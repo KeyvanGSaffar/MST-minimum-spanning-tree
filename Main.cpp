@@ -14,7 +14,7 @@ int main(){
   const int Pth = 1;
   const string n = "n";
   int sq_area = 400;  // square area with this value as side length
-  int n_num[] = {10,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
+  int n_num[] = {25,-1};//{5,15,25,35,45,65,85,105,125,145,170,190,200}    // number of nodes
   int alpha = 2;
   for (int node = 0; n_num[node]!=-1; node++){
 
@@ -39,7 +39,7 @@ int main(){
     /////////////////////////////////////////////////////////////////////////
     // locating nodes in the square area randomly
     //
-    n_locate(n_num[node],sq_area,loc_x,loc_y);  
+    n_locate(n_num[node],loc_x,loc_y);  
     
     // for (int j=0; j < n_num[node]; j++){
     //   cout << setw(12) <<loc_x[j];
@@ -114,9 +114,15 @@ int main(){
 
 
     cout << "p(x) :" << endl;
+    double sum_px=0;
     for (int i=0; i<n_num[node] ; i++){
       cout << p_x[i] << " "; 
+      sum_px += p_x[i];
     }
+    cout << endl;
+    cout << endl;
+    cout << "Sum of p(x):" << endl;
+    cout << sum_px << endl;
     cout << endl;
     //////////////////////////////////////////////////////////////////////////
     //
@@ -143,9 +149,17 @@ int main(){
     cout << endl;
 
     cout << "p(x) MST :" << endl;
+    sum_px=0;
     for (int i=0; i<n_num[node] ; i++){
       cout << p_x[i] << " "; 
+      sum_px += p_x[i];
     }
+    cout << endl;
+    cout << "Sum of p(x):" << endl;
+    cout << sum_px << endl;
+    cout << endl;
+
+
 
     // nSet.insert("AITF");
     // nSet.insert("Google");
