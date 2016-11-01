@@ -3,6 +3,7 @@
 #include <set>
 #include <random>
 #include <cmath>
+#include <string.h>   //to use memset
 #include "function.hpp"
 
 using namespace std;
@@ -305,4 +306,144 @@ void pickup_grape(int n,double p_x[],double P[],int T[]){
 
   }
 
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+void algorithm_CA(int Pth, int alpha, int round, int n_num[], double cost_vec[]){
+  for (int node = 0; n_num[node]!=-1; node++){
+    double round_sum = 0;
+    for(int r=0; r<round; r++){
+    
+      double loc_x[n_num[node]];  // an array to represent the location x
+      double loc_y[n_num[node]];  // an array to represent the location y
+      set<string> nSet; // set of the nodes that are already included
+      set<string>::iterator it; // itereator to refer to the elements of the nSet
+      // set<int> inc_Set;  // for tree formation, the set of vertices included in the tree
+      // set<int> prim_Set;   // for tree formation, the set of vertices not included in the tree
+      set<int>::iterator it_temp; //used to access elemens of sets: inc_Set,prim_Set
+      int n_name[n_num[node]];  // an array including the name of all nodes
+      // double P[n_num[node]][n_num[node]];   // array holding edge values
+      double P[n_num[node]*n_num[node]];   // array holding edge values
+      double P_old[n_num[node]*n_num[node]];    // to keep the unchanged powers
+      // int T[n_num[node]][n_num[node]];
+      int T[n_num[node]*n_num[node]];
+      int T_old[n_num[node]*n_num[node]];
+      int center;   // as defined in the paper
+      double power;
+      int newT[n_num[node]*n_num[node]];
+      double p_x[n_num[node]];
+      /////////////////////////////////////////////////////////////////////////
+      // locating nodes in the square area randomly
+      //
+      n_locate(n_num[node],loc_x,loc_y);      
+      //////////////////////////////////////////////////////////////////////////
+      // setting arrays' elements to 0 value
+      //
+      memset(p_x,0,n_num[node]*sizeof(double));
+      memset(newT,0,n_num[node]*n_num[node]*sizeof(int));
+      //////////////////////////////////////////////////////////////////////////
+      // filling P with the edges costs
+      //
+      p_generator(n_num[node],Pth,alpha,P,loc_x,loc_y);
+      memcpy(P_old,P,sizeof(double)*n_num[node]*n_num[node]);
+      //////////////////////////////////////////////////////////////////////////
+      //In this part we use the Prim's algorithm o find the MST
+      //
+      MST(n_num[node], P, T);
+      memcpy(T_old,T,n_num[node]*n_num[node]*sizeof(int));  // copying the values of T to T_old
+
+      
+
+      //////////////////////////////////////////////////////////////////////////
+      //
+      //
+      double maxCE = 3 ;
+      // int while_cnt = 0;
+      while(maxCE>2){
+        maxCE = 0;
+        newT_creator_maxCE_update(n_num[node], maxCE, center, power, P, T, newT);
+        CE_check(n_num[node],maxCE,center,power,P,T,newT,p_x);
+        // while_cnt++;
+      }
+      //////////////////////////////////////////////////////////////////////////
+      //  Showing the parameters before final stage of ggrape picking up
+      //
+
+      // cout << endl;
+      // print_array(n_num[node],P);
+      // cout<<endl;
+
+      // cout << "while_cnt" << endl;
+      // cout << while_cnt << endl;
+      // cout << endl;
+
+      // cout << "Print T" << endl;
+      // print_tree(n_num[node],T);
+      // cout << endl;
+
+
+      // cout << "p(x) :" << endl;
+      // double sum_px=0;
+      // for (int i=0; i<n_num[node] ; i++){
+      //   cout << p_x[i] << " "; 
+      //   sum_px += p_x[i];
+      // }
+      // cout << endl;
+      // cout << endl;
+      // cout << "Sum of p(x):" << endl;
+      // cout << sum_px << endl;
+      // cout << endl;
+      
+      //////////////////////////////////////////////////////////////////////////
+      //  Final Stage
+      //
+      memset(p_x,0,n_num[node]*sizeof(double)); // clearing p_x
+      pickup_grape(n_num[node],p_x,P_old,T);
+
+      // showing parameters after final stage
+      // cout << "p(x) final :" << endl;
+      // for (int i=0; i<n_num[node] ; i++){
+      //   cout << p_x[i] << " "; 
+      // }
+      // cout << endl;
+      double sum_px=0;
+      for (int i=0; i<n_num[node] ; i++){
+        // cout << p_x[i] << " "; 
+        sum_px += p_x[i];
+      }
+      round_sum += sum_px;
+      
+      // cout << "MST solution:" << endl;
+  
+      //////////////////////////////////////////////////////////////////////////
+      //  THIS PART IS TO RUN MST FOR COMPARISION PURPOSE
+      //  To do so we pass T_old and P_old to MST and pickup_grape functions
+      //
+      // memset(p_x,0,n_num[node]*sizeof(double)); // clearing p_x
+      // pickup_grape(n_num[node],p_x,P_old,T_old);
+
+      // cout << "Print P_old" << endl;
+      // print_array(n_num[node],P_old);
+
+      // cout << "Print T_old" << endl;
+      // print_tree(n_num[node],T_old);
+      // cout << endl;
+
+      // cout << "p(x) MST :" << endl;
+      // sum_px=0;
+      // for (int i=0; i<n_num[node] ; i++){
+      //   cout << p_x[i] << " "; 
+      //   sum_px += p_x[i];
+      // }
+      // cout << endl;
+      // cout << "Sum of p(x):" << endl;
+      // cout << sum_px << endl;
+      // cout << endl;
+    }
+    cost_vec[node] = round_sum/round;
+    cout << "Sum of p(x):" << endl;
+    cout << cost_vec[node] << endl;
+
+  }
 }

@@ -13,5 +13,6 @@ using namespace std;
   double tree_cost(int, int[], double[]);
   void newT_creator_maxCE_update(int, double&, int&, double&, double[], int[], int[]);
   void CE_check(int, double, int, double, double[], int[], int[], double[]);
-  void pickup_grape(int n,double[],double[],int[]);
+  void pickup_grape(int,double[],double[],int[]);
+  void algorithm_CA(int,int,int,int[],double[]);
 #endif 
