@@ -4,6 +4,7 @@
 #include <random>
 #include <cmath>
 #include <string.h>   //to use memset
+#include <fstream>
 #include "function.hpp"
 
 using namespace std;
@@ -311,6 +312,8 @@ void pickup_grape(int n,double p_x[],double P[],int T[]){
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 void algorithm_CA(int Pth, int alpha, int round, int n_num[], double cost_vec[]){
+  ofstream results;
+  results.open("Output.csv");
   for (int node = 0; n_num[node]!=-1; node++){
     double round_sum = 0;
     for(int r=0; r<round; r++){
@@ -442,8 +445,10 @@ void algorithm_CA(int Pth, int alpha, int round, int n_num[], double cost_vec[])
       // cout << endl;
     }
     cost_vec[node] = round_sum/round;
+    results << cost_vec[node] << ",";
     cout << "Sum of p(x):" << endl;
     cout << cost_vec[node] << endl;
 
   }
+  results.close();
 }
